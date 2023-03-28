@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.uzb7.exchangerates.R
-import com.uzb7.exchangerates.model.Rates
 import com.uzb7.exchangerates.model.Symboles
 
 class RatesRecyclerView(val flagList:ArrayList<Symboles>,val courseList:ArrayList<Double>):RecyclerView.Adapter<RatesRecyclerView.RatesViewHolder>() {

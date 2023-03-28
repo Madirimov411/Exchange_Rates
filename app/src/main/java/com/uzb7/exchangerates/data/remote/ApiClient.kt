@@ -2,9 +2,11 @@ package com.uzb7.exchangerates.data.remote
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
+import java.util.concurrent.TimeUnit
+
 
 object ApiClient {
 
@@ -13,17 +15,18 @@ object ApiClient {
     val SERVER_DEVELOPMENT="https://api.apilayer.com/exchangerates_data/"
     val SERVER_PRODUCTION="https://api.apilayer.com/exchangerates_data/"
 
-    private val retrofit= getRetrofit()
+    private val retrofit= getRetrofit(getClient())
 
     val apiService:ApiService= retrofit.create(ApiService::class.java)
 
 
-    fun getRetrofit(): Retrofit {
-        return Retrofit.Builder()
-            .baseUrl(baseURL())
+    fun getRetrofit(client: OkHttpClient): Retrofit {
+        val build = Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
-            .client(getClient())
+            .baseUrl(baseURL())
+            .client(client)
             .build()
+        return build
     }
 
     fun baseURL():String{
@@ -33,7 +36,14 @@ object ApiClient {
     }
 
     fun getClient(): OkHttpClient {
-        return OkHttpClient.Builder().addInterceptor(Interceptor { chain ->
+        return OkHttpClient.Builder()
+            .connectTimeout(160, TimeUnit.SECONDS)
+            .readTimeout(160, TimeUnit.SECONDS)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            })
+
+            .addInterceptor(Interceptor { chain ->
             val builder=chain.request().newBuilder()
             builder.addHeader(
                 "apikey",

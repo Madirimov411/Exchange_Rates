@@ -2,12 +2,8 @@ package com.uzb7.exchangerates.ui.fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,14 +12,14 @@ import com.uzb7.exchangerates.adapter.RatesRecyclerView
 import com.uzb7.exchangerates.adapter.SpinnerRatesAdapter
 import com.uzb7.exchangerates.data.remote.ApiClient
 import com.uzb7.exchangerates.databinding.FragmentRatesBinding
-import com.uzb7.exchangerates.model.Courses
-import com.uzb7.exchangerates.model.Rates
 import com.uzb7.exchangerates.model.Symboles
 import com.uzb7.moviedb.utils.viewBinding
 import retrofit2.Call
 import retrofit2.Callback
+import com.uzb7.exchangerates.model.Rates
 import retrofit2.Response
 
+@Suppress("CAST_NEVER_SUCCEEDS")
 class RatesFragment : Fragment(R.layout.fragment_rates) {
     private val binding by viewBinding { FragmentRatesBinding.bind(it) }
     lateinit var list:ArrayList<Symboles>
@@ -49,44 +45,216 @@ class RatesFragment : Fragment(R.layout.fragment_rates) {
                     id: Long
                 ) {
                     Toast.makeText(requireContext(), list[position].abbr, Toast.LENGTH_SHORT).show()
-                    loadCurses(list[position].abbr)
+                    loadCurses()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {
                 }
             }
-            adapterCourse=RatesRecyclerView(flagList,courseList)
-            rvRates.adapter=adapterCourse
-            rvRates.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+
         }
     }
 
-    private fun loadCurses(base: String) {
-
-        ApiClient.apiService.getLatestCourses(base).enqueue(object :Callback<Courses>{
-            override fun onResponse(call: Call<Courses>, response: Response<Courses>) {
-                if(response.isSuccessful){
-                    Log.d("@@@@", "onResponse: ${response.body().toString()}")
-                    loadCourse(response.body()?.rates as ArrayList<Double>)
-                    adapterCourse.submitList(flagList,courseList)
+    private fun loadCurses() {
+        ApiClient.apiService.getLatestCourses("UZS").enqueue(object :Callback<com.uzb7.exchangerates.model.Courses>{
+            override fun onResponse(
+                call: Call<com.uzb7.exchangerates.model.Courses>,
+                response: Response<com.uzb7.exchangerates.model.Courses>
+            ) {
+                if (response.isSuccessful){
+                    Log.d("AAAAAAA", "onResponse1: ${response.body()}")
+                    binding.tv.text=response.body().toString()
+                    loadCourse(response.body()?.rates)
+                    adapterCourse=RatesRecyclerView(flagList,courseList)
+                    binding.rvRates.adapter=adapterCourse
+                    binding.rvRates.layoutManager=LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
+                } else{
+                    Log.d("AAAAAAA", "onResponse2: ${response.errorBody()}")
                 }
             }
 
-            override fun onFailure(call: Call<Courses>, t: Throwable) {
+            override fun onFailure(
+                call: Call<com.uzb7.exchangerates.model.Courses>,
+                t: Throwable
+            ) {
+                Log.d("AAAAAAA", "onFailure: ${t.localizedMessage}")
             }
 
-
         })
-
     }
 
-    private fun loadCourse(rates: ArrayList<Double>) {
-        rates.forEach {
-            courseList.add(it)
-        }
+    private fun loadCourse(rates: Rates?) {
+        courseList.add(rates?.aED!!.toDouble())
+        courseList.add(rates.aFN!! as Double)
+        courseList.add(rates.aLL!! as Double)
+        courseList.add(rates.aMD!! as Double)
+        courseList.add(rates.aNG!! as Double)
+        courseList.add(rates.aOA!! as Double)
+        courseList.add(rates.aRS!! as Double)
+        courseList.add(rates.aUD!! as Double)
+        courseList.add(rates.aWG!! as Double)
+        courseList.add(rates.aZN!! as Double)
+        courseList.add(rates.bAM!! as Double)
+        courseList.add(rates.bBD!! as Double)
+        courseList.add(rates.bDT!! as Double)
+        courseList.add(rates.bGN!! as Double)
+        courseList.add(rates.bHD!! as Double)
+        courseList.add(rates.bIF!! as Double)
+        courseList.add(rates.bMD!! as Double)
+        courseList.add(rates.bND!! as Double)
+        courseList.add(rates.bOB!! as Double)
+        courseList.add(rates.bRL!! as Double)
+        courseList.add(rates.bSD!! as Double)
+        courseList.add(rates.bTC!! as Double)
+        courseList.add(rates.bTN!! as Double)
+        courseList.add(rates.bWP!! as Double)
+        courseList.add(rates.bYN!! as Double)
+        courseList.add(rates.bYR!! as Double)
+        courseList.add(rates.bZD!! as Double)
+        courseList.add(rates.cAD!! as Double)
+        courseList.add(rates.cDF!! as Double)
+        courseList.add(rates.cHF!! as Double)
+        courseList.add(rates.cLF!! as Double)
+        courseList.add(rates.cLP!! as Double)
+        courseList.add(rates.cNY!! as Double)
+        courseList.add(rates.cOP!! as Double)
+        courseList.add(rates.cRC!! as Double)
+        courseList.add(rates.cUC!! as Double)
+        courseList.add(rates.cVE!! as Double)
+        courseList.add(rates.cZK!! as Double)
+        courseList.add(rates.dJF!! as Double)
+        courseList.add(rates.dKK!! as Double)
+        courseList.add(rates.dOP!! as Double)
+        courseList.add(rates.dZD!! as Double)
+        courseList.add(rates.eGP!! as Double)
+        courseList.add(rates.eRN!! as Double)
+        courseList.add(rates.eTB!! as Double)
+        courseList.add(rates.eUR!! as Double)
+        courseList.add(rates.fJD!! as Double)
+        courseList.add(rates.fKP!! as Double)
+        courseList.add(rates.gBP!! as Double)
+        courseList.add(rates.gEL!! as Double)
+        courseList.add(rates.gGP!! as Double)
+        courseList.add(rates.gHS!! as Double)
+        courseList.add(rates.gIP!! as Double)
+        courseList.add(rates.gMD!! as Double)
+        courseList.add(rates.gNF!! as Double)
+        courseList.add(rates.gTQ!! as Double)
+        courseList.add(rates.gYD!! as Double)
+        courseList.add(rates.hKD!! as Double)
+        courseList.add(rates.hNL!! as Double)
+        courseList.add(rates.hRK!! as Double)
+        courseList.add(rates.hTG!! as Double)
+        courseList.add(rates.hUF!! as Double)
+        courseList.add(rates.iDR!! as Double)
+        courseList.add(rates.iLS!! as Double)
+        courseList.add(rates.iMP!! as Double)
+        courseList.add(rates.iNR!! as Double)
+        courseList.add(rates.iQD!! as Double)
+        courseList.add(rates.iRR!! as Double)
+        courseList.add(rates.iSK!! as Double)
+        courseList.add(rates.jEP!! as Double)
+        courseList.add(rates.jMD!! as Double)
+        courseList.add(rates.jOD!! as Double)
+        courseList.add(rates.jPY!! as Double)
+        courseList.add(rates.kES!! as Double)
+        courseList.add(rates.kGS!! as Double)
+        courseList.add(rates.kHR!! as Double)
+        courseList.add(rates.kMF!! as Double)
+        courseList.add(rates.kPW!! as Double)
+        courseList.add(rates.kRW!! as Double)
+        courseList.add(rates.kWD!! as Double)
+        courseList.add(rates.kYD!! as Double)
+        courseList.add(rates.kZT!! as Double)
+        courseList.add(rates.lAK!! as Double)
+        courseList.add(rates.lBP!! as Double)
+        courseList.add(rates.lKR!! as Double)
+        courseList.add(rates.lRD!! as Double)
+        courseList.add(rates.lSL!! as Double)
+        courseList.add(rates.lTL!! as Double)
+        courseList.add(rates.lVL!! as Double)
+        courseList.add(rates.lYD!! as Double)
+        courseList.add(rates.mAD!! as Double)
+        courseList.add(rates.mDL!! as Double)
+        courseList.add(rates.mGA!! as Double)
+        courseList.add(rates.mKD!! as Double)
+        courseList.add(rates.mMK!! as Double)
+        courseList.add(rates.mNT!! as Double)
+        courseList.add(rates.mOP!! as Double)
+        courseList.add(rates.mRO!! as Double)
+        courseList.add(rates.mUR!! as Double)
+        courseList.add(rates.mVR!! as Double)
+        courseList.add(rates.mWK!! as Double)
+        courseList.add(rates.mXN!! as Double)
+        courseList.add(rates.mYR!! as Double)
+        courseList.add(rates.mZN!! as Double)
+        courseList.add(rates.nAD!! as Double)
+        courseList.add(rates.nGN!! as Double)
+        courseList.add(rates.nIO!! as Double)
+        courseList.add(rates.nOK!! as Double)
+        courseList.add(rates.nPR!! as Double)
+        courseList.add(rates.nZD!! as Double)
+        courseList.add(rates.oMR!! as Double)
+        courseList.add(rates.pAB!! as Double)
+        courseList.add(rates.pEN!! as Double)
+        courseList.add(rates.pGK!! as Double)
+        courseList.add(rates.pHP!! as Double)
+        courseList.add(rates.pKR!! as Double)
+        courseList.add(rates.pLN!! as Double)
+        courseList.add(rates.pYG!! as Double)
+        courseList.add(rates.qAR!! as Double)
+        courseList.add(rates.rON!! as Double)
+        courseList.add(rates.rSD!! as Double)
+        courseList.add(rates.rUB!! as Double)
+        courseList.add(rates.rWF!! as Double)
+        courseList.add(rates.sAR!! as Double)
+        courseList.add(rates.sBD!! as Double)
+        courseList.add(rates.sCR!! as Double)
+        courseList.add(rates.sDG!! as Double)
+        courseList.add(rates.sEK!! as Double)
+        courseList.add(rates.sGD!! as Double)
+        courseList.add(rates.sHP!! as Double)
+        courseList.add(rates.sLE!! as Double)
+        courseList.add(rates.sLL!! as Double)
+        courseList.add(rates.sOS!! as Double)
+        courseList.add(rates.sRD!! as Double)
+        courseList.add(rates.sTD!! as Double)
+        courseList.add(rates.sVC!! as Double)
+        courseList.add(rates.sYP!! as Double)
+        courseList.add(rates.sZL!! as Double)
+        courseList.add(rates.tHB!! as Double)
+        courseList.add(rates.tJS!! as Double)
+        courseList.add(rates.tMT!! as Double)
+        courseList.add(rates.tND!! as Double)
+        courseList.add(rates.tOP!! as Double)
+        courseList.add(rates.tRY!! as Double)
+        courseList.add(rates.tTD!! as Double)
+        courseList.add(rates.tWD!! as Double)
+        courseList.add(rates.tZS!! as Double)
+        courseList.add(rates.uAH!! as Double)
+        courseList.add(rates.uGX!! as Double)
+        courseList.add(rates.uSD!! as Double)
+        courseList.add(rates.uYU!! as Double)
+        courseList.add(rates.uZS!! as Double)
+        courseList.add(rates.vEF!! as Double)
+        courseList.add(rates.vES!! as Double)
+        courseList.add(rates.vND!! as Double)
+        courseList.add(rates.vUV!! as Double)
+        courseList.add(rates.wST!! as Double)
+        courseList.add(rates.xAF!! as Double)
+        courseList.add(rates.xAG!! as Double)
+        courseList.add(rates.xAU!! as Double)
+        courseList.add(rates.xCD!! as Double)
+        courseList.add(rates.xDR!! as Double)
+        courseList.add(rates.xOF!! as Double)
+        courseList.add(rates.xPF!! as Double)
+        courseList.add(rates.xPF!! as Double)
+        courseList.add(rates.yER!! as Double)
+        courseList.add(rates.zAR!! as Double)
+        courseList.add(rates.zMK!! as Double)
+        courseList.add(rates.zMW!! as Double)
+        courseList.add(rates.zWL!! as Double)
     }
-
-
     fun listSniper():ArrayList<Symboles>{
         val symboles=ArrayList<Symboles>()
         symboles.add(Symboles("AED","United Arab Emirates Dirham"))
