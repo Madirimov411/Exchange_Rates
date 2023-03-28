@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        app:shapeAppearanceOverlay="@style/circle"
+        android:id="@+id/countryFlag"/>
+
+    <LinearLayout
+        android:layout_marginStart="10dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stateAbbr"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:id="@+id/countryAbbr"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="stateName"
+            android:id="@+id/countryName"
+            android:textSize="14sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:text="kurs"
+        android:id="@+id/courses"/>
+
+
+</LinearLayout>

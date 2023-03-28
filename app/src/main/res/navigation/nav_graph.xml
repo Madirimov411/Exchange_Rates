@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/ratesFragment">
+
+    <fragment
+        android:id="@+id/ratesFragment"
+        android:name="com.uzb7.exchangerates.ui.fragment.RatesFragment"
+        android:label="fragment_rates"
+        tools:layout="@layout/fragment_rates" />
+    <fragment
+        android:id="@+id/convertorFragment"
+        android:name="com.uzb7.exchangerates.ui.fragment.ConvertorFragment"
+        android:label="fragment_convertor"
+        tools:layout="@layout/fragment_convertor" />
+</navigation>
